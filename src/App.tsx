@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, FormEvent, MouseEvent } from 'react'
+import { useState, ChangeEvent, FormEvent, MouseEvent, Fragment } from 'react'
 import shuffleLogo from './assets/shuffle.svg'
 import './App.css'
 
@@ -13,7 +13,7 @@ const App  = () => {
   const handleNames = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setNames(e.target.value);
     setNamesArray(names.split('\n'));
-    setGroups(Math.ceil(namesArray.length / groupSize));
+    setGroups(Math.floor(namesArray.length / groupSize));
   }
 
   const handleGroupSize = (e: ChangeEvent<HTMLInputElement>) => {
@@ -41,12 +41,24 @@ const App  = () => {
       newArray.push(tempArray);
       setNewNamesArray(newArray);
     }
+
+    // fix so that there is no one person remaining
+    // tempArray = namesArray.splice(0, 1);
+    // const final = newArray.splice(-1)
+    // const finalGroup = final.concat(tempArray).flat();
+    // newArray.push(finalGroup);
+    // setNewNamesArray(newArray);
+    
     setNamesArray(newNamesArray.flat())
   }
 
   const handleResults = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setResultTitle(`${groups} groups of ${groupSize}`.toUpperCase());
+    let desc = 'GROUPS';
+    if (groups <= 1) {
+      desc = 'GROUP'
+    } 
+    setResultTitle(`${groups} ${desc} OF ${groupSize}`);
     randomise();
     group();
   }
@@ -96,13 +108,13 @@ const App  = () => {
           <h3 className="text-white font-dosis">{resultTitle}</h3>
           <ul className='results'>{newNamesArray.map((group, index) => {
             return (
-              <>
+              <Fragment key={index}>
                 <p className='text-purple-300'>{index + 1}</p>
-                <ul key={group.join('')}>{group.map((name) => {
+                <ul>{group.map((name) => {
                   return <li key={name}>{name}</li>
               })}
                 </ul>
-              </>
+              </Fragment>
             )
           })}
           </ul>
