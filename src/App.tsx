@@ -19,6 +19,8 @@ const App = () => {
     console.log(groupSize);
     console.log(names);
     e.preventDefault();
+    setNames([]);
+    setGroupSize(2);
   }
 
   return (
@@ -39,6 +41,7 @@ const App = () => {
               cols="30" 
               rows="10" 
               placeholder='Enter each name on a new line...'
+              value={names}
               onChange={handleNames}>
             </textarea>
           </label>
@@ -49,7 +52,7 @@ const App = () => {
               type="number" 
               id="size" 
               size="3" 
-              defaultValue={groupSize} 
+              value={groupSize}
               onChange={handleGroupSize}/>
           </label>
           <button>
