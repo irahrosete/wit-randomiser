@@ -30,12 +30,15 @@ const App = () => {
 
   const handleResults = () => {
     setResultTitle(`Groups of ${groupSize}`.toUpperCase());
-    console.log(namesArray);
+    setGroupings([]);
     randomise();
-    console.log(namesArray);
     setGroupings(namesArray);
     // setNames('');
     // setGroupSize(1);
+  }
+
+  const handleReset = () => {
+    setGroupings([])
   }
 
   const randomise = () => {
@@ -44,7 +47,6 @@ const App = () => {
       const temp = Math.floor(Math.random() * (i + 1));
       [namesArray[temp], namesArray[i]] = [namesArray[i], namesArray[temp]];
     }
-    
     
   }
 
@@ -81,7 +83,7 @@ const App = () => {
               value={groupSize}
               onChange={handleGroupSize}/>
           </label>
-          <button>
+          <button onClick={handleReset}>
             run
           </button>
         </form>
