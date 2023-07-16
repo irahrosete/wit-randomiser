@@ -5,22 +5,19 @@ import './App.css'
 const App  = () => {
   const [names, setNames] = useState<string>('')
   const [namesArray, setNamesArray] = useState<string[]>([])
+  const [newNamesArray, setNewNamesArray] = useState<string[][]>([])
   const [groupSize, setGroupSize] = useState<number>(2)
+  const [groups, setGroups] = useState<number>(0)
   const [resultTitle, setResultTitle] = useState<string>('')
-  const [groupings, setGroupings] = useState<string[]>([])
 
   const handleNames = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    setNamesArray(names.split('\n'));
     setNames(e.target.value);
+    setNamesArray(names.split('\n'));
+    setGroups(Math.ceil(namesArray.length / groupSize));
   }
 
   const handleGroupSize = (e: ChangeEvent<HTMLInputElement>) => {
     setGroupSize(parseInt(e.target.value));
-  }
-
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    handleResults();
   }
 
   const handleDownload = (e: MouseEvent<HTMLButtonElement>) => {
@@ -28,26 +25,30 @@ const App  = () => {
     e.preventDefault();
   }
 
-  const handleResults = () => {
-    setResultTitle(`Groups of ${groupSize}`.toUpperCase());
-    setGroupings([]);
-    randomise();
-    setGroupings(namesArray);
-    // setNames('');
-    // setGroupSize(1);
-  }
-
-  const handleReset = () => {
-    setGroupings([])
-  }
-
-  const randomise = () => {
+  const randomise = () => {      
     let i = namesArray.length;
     while (--i > 0) {
       const temp = Math.floor(Math.random() * (i + 1));
       [namesArray[temp], namesArray[i]] = [namesArray[i], namesArray[temp]];
     }
-    
+  }
+
+  const group = () => {  
+    const newArray: string[][] = [];
+    let tempArray: string[] = [];
+    while (namesArray.length > 0) {
+      tempArray = namesArray.splice(0, groupSize);
+      newArray.push(tempArray);
+      setNewNamesArray(newArray);
+    }
+    setNamesArray(newNamesArray.flat())
+  }
+
+  const handleResults = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setResultTitle(`${groups} groups of ${groupSize}`.toUpperCase());
+    randomise();
+    group();
   }
 
   return (
@@ -58,7 +59,7 @@ const App  = () => {
       </div>
 
       <div className="card">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleResults}>
           <label htmlFor="inputName">
             <textarea 
               className='rounded-md' 
@@ -83,18 +84,26 @@ const App  = () => {
               value={groupSize}
               onChange={handleGroupSize}/>
           </label>
-          <button onClick={handleReset}>
+          <button>
             run
           </button>
         </form>
       </div>
 
       <div>
-        { groupings.length > 0 ? (
+        { newNamesArray.length > 0 ? (
         <>
           <h3 className="text-white font-dosis">{resultTitle}</h3>
-          <ul className='results'>{groupings.map((name) => {
-            return <li key={name}>{name}</li>
+          <ul className='results'>{newNamesArray.map((group, index) => {
+            return (
+              <>
+                <p className='text-purple-300'>{index + 1}</p>
+                <ul key={group.join('')}>{group.map((name) => {
+                  return <li key={name}>{name}</li>
+              })}
+                </ul>
+              </>
+            )
           })}
           </ul>
           <button autoFocus onClick={handleDownload}>download</button>
