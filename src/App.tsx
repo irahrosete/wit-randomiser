@@ -1,29 +1,29 @@
-import { useState } from 'react'
+import { useState, ChangeEvent, FormEvent, MouseEvent } from 'react'
 import shuffleLogo from './assets/shuffle.svg'
 import './App.css'
 
-const App = () => {
-  const [names, setNames] = useState('')
-  const [namesArray, setNamesArray] = useState([])
-  const [groupSize, setGroupSize] = useState(2)
-  const [resultTitle, setResultTitle] = useState('')
-  const [groupings, setGroupings] = useState([])
+const App  = () => {
+  const [names, setNames] = useState<string>('')
+  const [namesArray, setNamesArray] = useState<string[]>([])
+  const [groupSize, setGroupSize] = useState<number>(2)
+  const [resultTitle, setResultTitle] = useState<string>('')
+  const [groupings, setGroupings] = useState<string[]>([])
 
-  const handleNames = (e) => {
+  const handleNames = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setNamesArray(names.split('\n'));
     setNames(e.target.value);
   }
 
-  const handleGroupSize = (e) => {
-    setGroupSize(e.target.value);
+  const handleGroupSize = (e: ChangeEvent<HTMLInputElement>) => {
+    setGroupSize(parseInt(e.target.value));
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     handleResults();
   }
 
-  const handleDownload = (e) => {
+  const handleDownload = (e: MouseEvent<HTMLButtonElement>) => {
     console.log('downloading...');
     e.preventDefault();
   }
@@ -65,8 +65,8 @@ const App = () => {
               autoFocus 
               name="inputName" 
               id="inputName" 
-              cols="30" 
-              rows="10" 
+              cols={30}
+              rows={10}
               placeholder='Enter each name on a new line...'
               value={names}
               onChange={handleNames}>
@@ -78,7 +78,7 @@ const App = () => {
               className='rounded-md' 
               type="number" 
               id="size" 
-              size="3" 
+              size={3}
               min={1}
               value={groupSize}
               onChange={handleGroupSize}/>
