@@ -13,11 +13,17 @@ const App  = () => {
   const handleNames = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setNames(e.target.value);
     setNamesArray(names.split('\n'));
-    setGroups(Math.floor(namesArray.length / groupSize));
+    // setGroups(Math.floor(namesArray.length / groupSize));
+    // setGroups(namesArray.length / groupSize);
+    // console.log(groups);
+    
   }
 
   const handleGroupSize = (e: ChangeEvent<HTMLInputElement>) => {
     setGroupSize(parseInt(e.target.value));
+    setGroups(namesArray.length / groupSize);
+    console.log(namesArray);
+    console.log(groups);
   }
 
   const handleDownload = (e: MouseEvent<HTMLButtonElement>) => {
@@ -63,6 +69,12 @@ const App  = () => {
     group();
   }
 
+  const handleClick = () => {
+    setGroups(Math.ceil(namesArray.length / groupSize));
+    console.log(namesArray);
+    console.log(groups);
+  }
+
   return (
     <>
       <div>
@@ -96,7 +108,7 @@ const App  = () => {
               value={groupSize}
               onChange={handleGroupSize}/>
           </label>
-          <button>
+          <button onClick={handleClick}>
             run
           </button>
         </form>
