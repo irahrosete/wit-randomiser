@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Dosis&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -41,8 +42,22 @@ h1 {
   line-height: 1.1;
 }
 
+h3 {
+  font-size: 1.5em;
+  line-height: 1.1;
+  margin-bottom: 0.8em;
+}
+
 p {
+  margin-bottom: 0.5em;
+}
+
+ul {
   margin-bottom: 1em;
+}
+
+li {
+  color: #bbb;
 }
 
 button {
@@ -81,14 +96,14 @@ textarea:focus {
 }
 
 label {
-  color: #888;
+  color: #bbb;
   font-size: 1.1em;
 }
 
 input {
   margin: 0.7em;
   background-color: #333333;
-  color: #c1add3;
+  color: #f9f9f9;
   font-weight: 600;
   text-align: center;
   padding: 0.3em;

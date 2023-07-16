@@ -3,11 +3,14 @@ import shuffleLogo from './assets/shuffle.svg'
 import './App.css'
 
 const App = () => {
-  const [names, setNames] = useState([])
+  const [names, setNames] = useState('')
+  const [namesArray, setNamesArray] = useState([])
   const [groupSize, setGroupSize] = useState(2)
-  const [results, setResults] = useState("")
+  const [resultTitle, setResultTitle] = useState('')
+  const [groupings, setGroupings] = useState([])
 
   const handleNames = (e) => {
+    setNamesArray(names.split('\n'));
     setNames(e.target.value);
   }
 
@@ -16,12 +19,8 @@ const App = () => {
   }
 
   const handleSubmit = (e) => {
-    console.log(groupSize);
-    console.log(names);
     e.preventDefault();
     handleResults();
-    setNames([]);
-    setGroupSize(2);
   }
 
   const handleDownload = (e) => {
@@ -30,7 +29,23 @@ const App = () => {
   }
 
   const handleResults = () => {
-    setResults(`Groups of ${groupSize}: ${names}`);
+    setResultTitle(`Groups of ${groupSize}`.toUpperCase());
+    console.log(namesArray);
+    randomise();
+    console.log(namesArray);
+    setGroupings(namesArray);
+    // setNames('');
+    // setGroupSize(1);
+  }
+
+  const randomise = () => {
+    let i = namesArray.length;
+    while (--i > 0) {
+      const temp = Math.floor(Math.random() * (i + 1));
+      [namesArray[temp], namesArray[i]] = [namesArray[i], namesArray[temp]];
+    }
+    
+    
   }
 
   return (
@@ -62,6 +77,7 @@ const App = () => {
               type="number" 
               id="size" 
               size="3" 
+              min={1}
               value={groupSize}
               onChange={handleGroupSize}/>
           </label>
@@ -72,11 +88,15 @@ const App = () => {
       </div>
 
       <div>
-        { results ? (
+        { groupings.length > 0 ? (
         <>
-          <p className="results">{results}</p>
-          <button onClick={handleDownload}>download</button>
-        </>) : ""
+          <h3 className="text-white font-dosis">{resultTitle}</h3>
+          <ul className='results'>{groupings.map((name) => {
+            return <li key={name}>{name}</li>
+          })}
+          </ul>
+          <button autoFocus onClick={handleDownload}>download</button>
+        </>) : []
         }
       </div>
     </>
