@@ -41,6 +41,10 @@ h1 {
   line-height: 1.1;
 }
 
+p {
+  margin-bottom: 1em;
+}
+
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -88,6 +92,7 @@ input {
   font-weight: 600;
   text-align: center;
   padding: 0.3em;
+  margin-right: 3em;
 }
 input:focus {
   outline: none !important;

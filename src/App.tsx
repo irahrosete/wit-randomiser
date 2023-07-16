@@ -3,9 +3,9 @@ import shuffleLogo from './assets/shuffle.svg'
 import './App.css'
 
 const App = () => {
-  // const [count, setCount] = useState(0)
   const [names, setNames] = useState([])
   const [groupSize, setGroupSize] = useState(2)
+  const [results, setResults] = useState("")
 
   const handleNames = (e) => {
     setNames(e.target.value);
@@ -19,8 +19,18 @@ const App = () => {
     console.log(groupSize);
     console.log(names);
     e.preventDefault();
+    handleResults();
     setNames([]);
     setGroupSize(2);
+  }
+
+  const handleDownload = (e) => {
+    console.log('downloading...');
+    e.preventDefault();
+  }
+
+  const handleResults = () => {
+    setResults(`Groups of ${groupSize}: ${names}`);
   }
 
   return (
@@ -62,13 +72,12 @@ const App = () => {
       </div>
 
       <div>
-      <p className="results">Result here.</p>
-      <p className="results">{groupSize}</p>
-      <p className="results">{names}</p>
-        {/* <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button> */}
-      <button>download</button>
+        { results ? (
+        <>
+          <p className="results">{results}</p>
+          <button onClick={handleDownload}>download</button>
+        </>) : ""
+        }
       </div>
     </>
   )
