@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Dosis&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -36,8 +38,26 @@ body {
 }
 
 h1 {
-  font-size: 3.2em;
+  font-size: 2.6em;
   line-height: 1.1;
+}
+
+h3 {
+  font-size: 1.5em;
+  line-height: 1.1;
+  margin-bottom: 0.8em;
+}
+
+p {
+  margin-bottom: 0.5em;
+}
+
+ul {
+  margin-bottom: 1em;
+}
+
+li {
+  color: #bbb;
 }
 
 button {
@@ -47,16 +67,52 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #7d6293;
   cursor: pointer;
   transition: border-color 0.25s;
 }
 button:hover {
-  border-color: #646cff;
+  border-color: #ccb2e1;
 }
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+  outline: none !important;
+  border: 1px solid #ccb2e1;
+  box-shadow: 0 0 7px #719ECE;
+}
+
+textarea {
+  display: block;
+  margin: 0.7em;
+  padding: 0.8em;
+  background-color: #333333;
+  color: #888;
+}
+textarea:focus {
+  outline: none !important;
+  border: 1px solid #ccb2e1;
+  box-shadow: 0 0 7px #719ECE;
+}
+
+label {
+  color: #bbb;
+  font-size: 1.1em;
+}
+
+input {
+  margin: 0.7em;
+  background-color: #333333;
+  color: #f9f9f9;
+  font-weight: 600;
+  text-align: center;
+  padding: 0.3em;
+  margin-right: 3em;
+}
+input:focus {
+  outline: none !important;
+  border: 1px solid #ccb2e1;
+  box-shadow: 0 0 7px #719ECE;
 }
 
 @media (prefers-color-scheme: light) {

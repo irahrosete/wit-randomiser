@@ -1,33 +1,127 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState, ChangeEvent, FormEvent, MouseEvent, Fragment } from 'react'
+import shuffleLogo from './assets/shuffle.svg'
 import './App.css'
 
-function App() {
-  const [count, setCount] = useState(0)
+const App  = () => {
+  const [names, setNames] = useState<string>('')
+  const [namesArray, setNamesArray] = useState<string[]>([])
+  const [newNamesArray, setNewNamesArray] = useState<string[][]>([])
+  const [groupSize, setGroupSize] = useState<number>(2)
+  const [groups, setGroups] = useState<number>(0)
+  const [resultTitle, setResultTitle] = useState<string>('')
+
+  const handleNames = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    setNames(e.target.value);
+    setNamesArray(names.split('\n'));
+    setGroups(Math.floor(namesArray.length / groupSize));
+  }
+
+  const handleGroupSize = (e: ChangeEvent<HTMLInputElement>) => {
+    setGroupSize(parseInt(e.target.value));
+  }
+
+  const handleDownload = (e: MouseEvent<HTMLButtonElement>) => {
+    console.log('downloading...');
+    e.preventDefault();
+  }
+
+  const randomise = () => {      
+    let i = namesArray.length;
+    while (--i > 0) {
+      const temp = Math.floor(Math.random() * (i + 1));
+      [namesArray[temp], namesArray[i]] = [namesArray[i], namesArray[temp]];
+    }
+  }
+
+  const group = () => {  
+    const newArray: string[][] = [];
+    let tempArray: string[] = [];
+    while (namesArray.length > 0) {
+      tempArray = namesArray.splice(0, groupSize);
+      newArray.push(tempArray);
+      setNewNamesArray(newArray);
+    }
+
+    // fix so that there is no one person remaining
+    // tempArray = namesArray.splice(0, 1);
+    // const final = newArray.splice(-1)
+    // const finalGroup = final.concat(tempArray).flat();
+    // newArray.push(finalGroup);
+    // setNewNamesArray(newArray);
+    
+    setNamesArray(newNamesArray.flat())
+  }
+
+  const handleResults = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    let desc = 'GROUPS';
+    if (groups <= 1) {
+      desc = 'GROUP'
+    } 
+    setResultTitle(`${groups} ${desc} OF ${groupSize}`);
+    randomise();
+    group();
+  }
 
   return (
     <>
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        <img src={shuffleLogo} className="logo" alt="Shuffle logo" />
+        <h1 className='font-dosis'>WiT Randomiser</h1>
       </div>
-      <h1>Vite + React</h1>
+
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+        <form onSubmit={handleResults}>
+          <label htmlFor="inputName">
+            <textarea 
+              className='rounded-md' 
+              autoFocus 
+              name="inputName" 
+              id="inputName" 
+              cols={30}
+              rows={10}
+              placeholder='Enter each name on a new line...'
+              value={names}
+              onChange={handleNames}>
+            </textarea>
+          </label>
+          <label htmlFor="size">
+            How many in a group?
+            <input 
+              className='rounded-md' 
+              type="number" 
+              id="size" 
+              size={3}
+              min={1}
+              value={groupSize}
+              onChange={handleGroupSize}/>
+          </label>
+          <button>
+            run
+          </button>
+        </form>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+
+      <div>
+        { newNamesArray.length > 0 ? (
+        <>
+          <h3 className="text-white font-dosis">{resultTitle}</h3>
+          <ul className='results'>{newNamesArray.map((group, index) => {
+            return (
+              <Fragment key={index}>
+                <p className='text-purple-300'>{index + 1}</p>
+                <ul>{group.map((name) => {
+                  return <li key={name}>{name}</li>
+              })}
+                </ul>
+              </Fragment>
+            )
+          })}
+          </ul>
+          <button autoFocus onClick={handleDownload}>download</button>
+        </>) : []
+        }
+      </div>
     </>
   )
 }
