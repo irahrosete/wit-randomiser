@@ -5,7 +5,6 @@
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  /* font-family: 'Dosis', sans-serif; */
   line-height: 1.5;
   font-weight: 400;
 
@@ -49,7 +48,7 @@ button {
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #7d6293;
   cursor: pointer;
   transition: border-color 0.25s;
 }
@@ -59,6 +58,38 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+textarea {
+  display: block;
+  margin: 0.7em;
+  padding: 0.8em;
+  background-color: #333333;
+  color: #888;
+}
+textarea:focus {
+  outline: none !important;
+  border: 1px solid #ccb2e1;
+  box-shadow: 0 0 7px #719ECE;
+}
+
+label {
+  color: #888;
+  font-size: 1.1em;
+}
+
+input {
+  margin: 0.7em;
+  background-color: #333333;
+  color: #c1add3;
+  font-weight: 600;
+  text-align: center;
+  padding: 0.3em;
+}
+input:focus {
+  outline: none !important;
+  border: 1px solid #ccb2e1;
+  box-shadow: 0 0 7px #719ECE;
 }
 
 @media (prefers-color-scheme: light) {
