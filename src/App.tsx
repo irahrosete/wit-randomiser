@@ -13,22 +13,17 @@ const App  = () => {
   const handleNames = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setNames(e.target.value);
     setNamesArray(names.split('\n'));
-    // setGroups(Math.floor(namesArray.length / groupSize));
-    // setGroups(namesArray.length / groupSize);
-    // console.log(groups);
-    
   }
 
   const handleGroupSize = (e: ChangeEvent<HTMLInputElement>) => {
     setGroupSize(parseInt(e.target.value));
     setGroups(namesArray.length / groupSize);
-    console.log(namesArray);
-    console.log(groups);
   }
 
   const handleDownload = (e: MouseEvent<HTMLButtonElement>) => {
     console.log('downloading...');
     e.preventDefault();
+    // add ability to download results into text file
   }
 
   const randomise = () => {      
@@ -86,7 +81,7 @@ const App  = () => {
         <form onSubmit={handleResults}>
           <label htmlFor="inputName">
             <textarea 
-              className='rounded-md' 
+              className='rounded-md'
               autoFocus 
               name="inputName" 
               id="inputName" 
