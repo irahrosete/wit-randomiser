@@ -105,7 +105,7 @@ const App  = () => {
               onChange={handleGroupSize}/>
           </label>
           
-          <button onClick={handleClick} className='mb-14 mt-3'>
+          <button onClick={handleClick} className='mt-3'>
             run
           </button>
           </div>
