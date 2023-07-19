@@ -92,6 +92,7 @@ const App  = () => {
               onChange={handleNames}>
             </textarea>
           </label>
+          <div>
           <label htmlFor="size">
             How many in a group?
             <input 
@@ -103,9 +104,12 @@ const App  = () => {
               value={groupSize}
               onChange={handleGroupSize}/>
           </label>
-          <button onClick={handleClick}>
+          </div>
+          <div>
+          <button onClick={handleClick} className='mb-14 mt-3'>
             run
           </button>
+          </div>
         </form>
       </div>
 
