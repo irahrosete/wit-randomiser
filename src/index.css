@@ -107,7 +107,7 @@ input {
   font-weight: 600;
   text-align: center;
   padding: 0.3em;
-  /* margin-right: 3em; */
+  margin-right: 2em;
 }
 input:focus {
   outline: none !important;
