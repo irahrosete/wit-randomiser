@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, FormEvent, MouseEvent, Fragment } from 'react'
+import { useState, ChangeEvent, FormEvent, Fragment } from 'react'
 import shuffleLogo from './assets/shuffle.svg'
 import './App.css'
 
