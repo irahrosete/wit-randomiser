@@ -71,7 +71,7 @@ const App  = () => {
   }
 
   return (
-    <>
+    <div className='mt-6 mb-16'>
       <div>
         <img src={shuffleLogo} className="logo" alt="Shuffle logo" />
         <h1 className='font-dosis'>WiT Randomiser</h1>
@@ -128,13 +128,13 @@ const App  = () => {
             )
           })}
           </ul>
-          <button autoFocus onClick={handleDownload} className='mb-14 mt-3'>
+          {/* <button autoFocus onClick={handleDownload} className='mb-14 mt-3'>
             download
-          </button>
+          </button> */}
         </>) : []
         }
       </div>
-    </>
+    </div>
   )
 }
 
