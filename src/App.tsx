@@ -77,7 +77,7 @@ const App  = () => {
         <h1 className='font-dosis'>WiT Randomiser</h1>
       </div>
 
-      <div className="card">
+      <div className="card font-dosis">
         <form onSubmit={handleResults}>
           <label htmlFor="inputName">
             <textarea 
@@ -106,7 +106,7 @@ const App  = () => {
           </label>
           
           <button onClick={handleClick} className='mt-3'>
-            run
+            RUN
           </button>
           </div>
         </form>
