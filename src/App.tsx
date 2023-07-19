@@ -104,8 +104,7 @@ const App  = () => {
               value={groupSize}
               onChange={handleGroupSize}/>
           </label>
-          </div>
-          <div>
+          
           <button onClick={handleClick} className='mb-14 mt-3'>
             run
           </button>
@@ -129,7 +128,9 @@ const App  = () => {
             )
           })}
           </ul>
-          <button autoFocus onClick={handleDownload}>download</button>
+          <button autoFocus onClick={handleDownload} className='mb-14 mt-3'>
+            download
+          </button>
         </>) : []
         }
       </div>
