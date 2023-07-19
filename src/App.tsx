@@ -20,11 +20,11 @@ const App  = () => {
     setGroups(namesArray.length / groupSize);
   }
 
-  const handleDownload = (e: MouseEvent<HTMLButtonElement>) => {
-    console.log('downloading...');
-    e.preventDefault();
+  // const handleDownload = (e: MouseEvent<HTMLButtonElement>) => {
+  //   console.log('downloading...');
+  //   e.preventDefault();
     // add ability to download results into text file
-  }
+  // }
 
   const randomise = () => {      
     let i = namesArray.length;
