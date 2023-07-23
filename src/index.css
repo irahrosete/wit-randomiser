@@ -86,7 +86,8 @@ button:focus-visible {
 
 textarea {
   display: block;
-  margin: 0.7em;
+  /* margin: 0.7em; */
+  margin: auto;
   padding: 0.8em;
   background-color: #333333;
 }
