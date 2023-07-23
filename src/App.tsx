@@ -1,6 +1,8 @@
 import { useState, ChangeEvent, FormEvent, Fragment } from 'react'
 import shuffleLogo from './assets/shuffle.svg'
 import './App.css'
+import { randomise, } from './util/randomise'
+import { group } from './util/group'
 
 const App  = () => {
   const [names, setNames] = useState<string>('')
@@ -17,12 +19,6 @@ const App  = () => {
     setGroupSize(parseInt(e.target.value));
   }
 
-  // const handleDownload = (e: MouseEvent<HTMLButtonElement>) => {
-  //   console.log('downloading...');
-  //   e.preventDefault();
-    // add ability to download results into text file
-  // }
-
   const handleReset = () => {
     setNames('');
     setGroupedNamesArray([]);
@@ -32,45 +28,30 @@ const App  = () => {
   const handleResults = (e: FormEvent<HTMLFormElement>) => {    
     e.preventDefault();    
     const namesArray = names.split('\n');
-    const groups = Math.floor(namesArray.length / groupSize);
+    const groups = namesArray.length / groupSize
+    const remainder = namesArray.length % groupSize
+    const groupNum = remainder == 1 ? Math.floor(groups) : Math.ceil(groups) 
+    const numOfNames = namesArray.length
     
     let desc = 'GROUPS';
-    if (groups <= 1) {
+    if (groupNum <= 1) {
       desc = 'GROUP'
     }
     
-    // groupSize cannot be greater than namesArray.length
-    names == '' ? setResultTitle('') : setResultTitle(`${groups} ${desc}`);
-    // randomise();
-    // group();
-
-// randomise
-    let i = namesArray.length;
-    while (--i > 0) {
-      const temp = Math.floor(Math.random() * (i + 1));
-      [namesArray[temp], namesArray[i]] = [namesArray[i], namesArray[temp]];
-    }
-
-// group
-    const newArray: string[][] = [];
-    let tempArray: string[] = [];
-    const remainder: number = namesArray.length % groupSize    
-
-    while (namesArray.length > 0) {
-      tempArray = namesArray.splice(0, remainder == 1 ? groupSize + 1 : groupSize);
-      newArray.push(tempArray);     
-      setGroupedNamesArray(newArray);
-    }
+    groupSize > numOfNames ? setGroupSize(numOfNames) : setGroupSize(groupSize)
+    names == '' ? setResultTitle('') : setResultTitle(`${groupNum} ${desc}`);
+    randomise(namesArray)
+    setGroupedNamesArray(group(namesArray, groupSize));
   }
 
   return (
-    <div className='mt-6 mb-16'>
+    <div className='mt-6 mb-16 font-dosis'>
       <div>
         <img src={shuffleLogo} className="logo" alt="Shuffle logo" />
-        <h1 className='font-dosis'>WiT Randomiser</h1>
+        <h1>WiT Randomiser</h1>
       </div>
 
-      <div className="card font-dosis">
+      <div className="card">
         <form onSubmit={handleResults}>
           <label htmlFor="inputName">
             <textarea 
@@ -109,7 +90,7 @@ const App  = () => {
       <div>
         { groupedNamesArray.length > 0 && groupedNamesArray[0][0] != '' ? (
         <>
-          <h3 className="text-white font-dosis">{resultTitle}</h3>
+          <h3 className="text-white">{resultTitle}</h3>
           <ul className='results'>
             {groupedNamesArray.map((group, index) => {
               return (
@@ -122,15 +103,12 @@ const App  = () => {
                 </Fragment>
               )
             })}
-          </ul>
+          </ul >
           <div>
-            <button onClick={handleReset} className='mb-14 mt-3'>
+            <button onClick={handleReset} className='mt-3'>
               reset
             </button>
           </div>
-          {/* <button autoFocus onClick={handleDownload} className='mb-14 mt-3'>
-            download
-          </button> */}
         </>) : ''
         }
       </div>
