@@ -38,10 +38,14 @@ const App  = () => {
       desc = 'GROUP'
     }
     
-    groupSize > numOfNames ? setGroupSize(numOfNames) : setGroupSize(groupSize)
+    const max = Math.max(2, numOfNames)
+    groupSize > numOfNames ? setGroupSize(max) : setGroupSize(groupSize)    
+    
+    if (groupSize <= numOfNames) {
     names == '' ? setResultTitle('') : setResultTitle(`${groupNum} ${desc}`);
     randomise(namesArray)
     setGroupedNamesArray(group(namesArray, groupSize));
+    }
   }
 
   return (
