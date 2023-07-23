@@ -7,7 +7,7 @@ const App  = () => {
   const [groupSize, setGroupSize] = useState<number>(2)
 
   const [resultTitle, setResultTitle] = useState<string>('')
-  const [newNamesArray, setNewNamesArray] = useState<string[][]>([])
+  const [groupedNamesArray, setGroupedNamesArray] = useState<string[][]>([])
 
   const handleNames = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setNames(e.target.value);
@@ -25,7 +25,7 @@ const App  = () => {
 
   const handleReset = () => {
     setNames('');
-    setNewNamesArray([]);
+    setGroupedNamesArray([]);
     setGroupSize(2);
   }
 
@@ -33,14 +33,14 @@ const App  = () => {
     e.preventDefault();    
     const namesArray = names.split('\n');
     const groups = Math.floor(namesArray.length / groupSize);
-
+    
     let desc = 'GROUPS';
     if (groups <= 1) {
       desc = 'GROUP'
-    }    
+    }
     
+    // groupSize cannot be greater than namesArray.length
     names == '' ? setResultTitle('') : setResultTitle(`${groups} ${desc}`);
-    
     // randomise();
     // group();
 
@@ -54,18 +54,13 @@ const App  = () => {
 // group
     const newArray: string[][] = [];
     let tempArray: string[] = [];
-    const remainder: number = namesArray.length % groupSize
-    console.log(remainder);
-    
+    const remainder: number = namesArray.length % groupSize    
 
     while (namesArray.length > 0) {
-      remainder == 1 ? 
-        tempArray = namesArray.splice(0, groupSize + 1) : 
-        tempArray = namesArray.splice(0, groupSize);
-
+      tempArray = namesArray.splice(0, remainder == 1 ? groupSize + 1 : groupSize);
       newArray.push(tempArray);     
-      setNewNamesArray(newArray);
-    }  
+      setGroupedNamesArray(newArray);
+    }
   }
 
   return (
@@ -112,11 +107,11 @@ const App  = () => {
       </div>
 
       <div>
-        { newNamesArray.length > 0 && newNamesArray[0][0] != '' ? (
+        { groupedNamesArray.length > 0 && groupedNamesArray[0][0] != '' ? (
         <>
           <h3 className="text-white font-dosis">{resultTitle}</h3>
           <ul className='results'>
-            {newNamesArray.map((group, index) => {
+            {groupedNamesArray.map((group, index) => {
               return (
                 <Fragment key={index}>
                   <p className='text-purple-300'>{index + 1}</p>
