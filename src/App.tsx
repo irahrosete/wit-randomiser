@@ -74,7 +74,7 @@ const App  = () => {
                 type="number" 
                 id="size" 
                 size={3}
-                min={1}
+                min={2}
                 value={groupSize}
                 onChange={handleGroupSize}/>
             </label>
