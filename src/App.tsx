@@ -4,20 +4,17 @@ import './App.css'
 
 const App  = () => {
   const [names, setNames] = useState<string>('')
-  const [namesArray, setNamesArray] = useState<string[]>([])
-  const [newNamesArray, setNewNamesArray] = useState<string[][]>([])
   const [groupSize, setGroupSize] = useState<number>(2)
-  const [groups, setGroups] = useState<number>(0)
+
   const [resultTitle, setResultTitle] = useState<string>('')
+  const [newNamesArray, setNewNamesArray] = useState<string[][]>([])
 
   const handleNames = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setNames(e.target.value);
-    setNamesArray(names.split('\n'));
   }
 
   const handleGroupSize = (e: ChangeEvent<HTMLInputElement>) => {
     setGroupSize(parseInt(e.target.value));
-    setGroups(namesArray.length / groupSize);
   }
 
   // const handleDownload = (e: MouseEvent<HTMLButtonElement>) => {
@@ -26,48 +23,49 @@ const App  = () => {
     // add ability to download results into text file
   // }
 
-  const randomise = () => {      
+  const handleReset = () => {
+    setNames('');
+    setNewNamesArray([]);
+    setGroupSize(2);
+  }
+
+  const handleResults = (e: FormEvent<HTMLFormElement>) => {    
+    e.preventDefault();    
+    const namesArray = names.split('\n');
+    const groups = Math.floor(namesArray.length / groupSize);
+
+    let desc = 'GROUPS';
+    if (groups <= 1) {
+      desc = 'GROUP'
+    }    
+    
+    names == '' ? setResultTitle('') : setResultTitle(`${groups} ${desc}`);
+    
+    // randomise();
+    // group();
+
+// randomise
     let i = namesArray.length;
     while (--i > 0) {
       const temp = Math.floor(Math.random() * (i + 1));
       [namesArray[temp], namesArray[i]] = [namesArray[i], namesArray[temp]];
     }
-  }
 
-  const group = () => {  
+// group
     const newArray: string[][] = [];
     let tempArray: string[] = [];
-    while (namesArray.length > 0) {
-      tempArray = namesArray.splice(0, groupSize);
-      newArray.push(tempArray);
-      setNewNamesArray(newArray);
-    }
-
-    // fix so that there is no one person remaining
-    // tempArray = namesArray.splice(0, 1);
-    // const final = newArray.splice(-1)
-    // const finalGroup = final.concat(tempArray).flat();
-    // newArray.push(finalGroup);
-    // setNewNamesArray(newArray);
+    const remainder: number = namesArray.length % groupSize
+    console.log(remainder);
     
-    setNamesArray(newNamesArray.flat())
-  }
 
-  const handleResults = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    let desc = 'GROUPS';
-    if (groups <= 1) {
-      desc = 'GROUP'
-    } 
-    setResultTitle(`${groups} ${desc} OF ${groupSize}`);
-    randomise();
-    group();
-  }
+    while (namesArray.length > 0) {
+      remainder == 1 ? 
+        tempArray = namesArray.splice(0, groupSize + 1) : 
+        tempArray = namesArray.splice(0, groupSize);
 
-  const handleClick = () => {
-    setGroups(Math.ceil(namesArray.length / groupSize));
-    console.log(namesArray);
-    console.log(groups);
+      newArray.push(tempArray);     
+      setNewNamesArray(newArray);
+    }  
   }
 
   return (
@@ -93,45 +91,52 @@ const App  = () => {
             </textarea>
           </label>
           <div>
-          <label htmlFor="size">
-            How many in a group?
-            <input 
-              className='rounded-md' 
-              type="number" 
-              id="size" 
-              size={3}
-              min={1}
-              value={groupSize}
-              onChange={handleGroupSize}/>
-          </label>
-          
-          <button onClick={handleClick} className='mt-3'>
-            RUN
+            <label htmlFor="size">
+              How many in a group?
+              <input 
+                className='rounded-md' 
+                type="number" 
+                id="size" 
+                size={3}
+                min={1}
+                value={groupSize}
+                onChange={handleGroupSize}/>
+            </label>
+          </div>
+          <div>
+          <button className='mt-3'>
+            run
           </button>
           </div>
         </form>
       </div>
 
       <div>
-        { newNamesArray.length > 0 ? (
+        { newNamesArray.length > 0 && newNamesArray[0][0] != '' ? (
         <>
           <h3 className="text-white font-dosis">{resultTitle}</h3>
-          <ul className='results'>{newNamesArray.map((group, index) => {
-            return (
-              <Fragment key={index}>
-                <p className='text-purple-300'>{index + 1}</p>
-                <ul>{group.map((name) => {
-                  return <li key={name}>{name}</li>
-              })}
-                </ul>
-              </Fragment>
-            )
-          })}
+          <ul className='results'>
+            {newNamesArray.map((group, index) => {
+              return (
+                <Fragment key={index}>
+                  <p className='text-purple-300'>{index + 1}</p>
+                  <ul>{group.map((name) => {
+                    return <li key={name}>{name}</li>
+                })}
+                  </ul>
+                </Fragment>
+              )
+            })}
           </ul>
+          <div>
+            <button onClick={handleReset} className='mb-14 mt-3'>
+              reset
+            </button>
+          </div>
           {/* <button autoFocus onClick={handleDownload} className='mb-14 mt-3'>
             download
           </button> */}
-        </>) : []
+        </>) : ''
         }
       </div>
     </div>
